@@ -74,10 +74,12 @@ struct EmployeeDetailView: View {
             }
         }
         .sheet(isPresented: $showEdit) {
-            EditEmployeeView(employee: employee, title: "Edit Employee") { name, role, rate, notes, isActive in
+            EditEmployeeView(employee: employee, title: "Edit Employee") { name, role, rate, shiftStartMinutes, shiftEndMinutes, notes, isActive in
                 employee.name = name
                 employee.roleOrTitle = role
                 employee.hourlyRate = rate
+                employee.shiftStartMinutes = shiftStartMinutes
+                employee.shiftEndMinutes = shiftEndMinutes
                 employee.notes = notes
                 employee.isActive = isActive
                 try? context.save()
@@ -120,6 +122,12 @@ struct EmployeeDetailView: View {
             VStack(alignment: .leading, spacing: 16) {
                 Text(employee.roleOrTitle ?? "No role/title")
                     .foregroundStyle(.secondary)
+
+                if let shiftSummary = employee.shiftSummary {
+                    Label("Shift: \(shiftSummary)", systemImage: "clock")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
 
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
                     summaryCard(title: "Entries", value: "\(allEntries.count)")
@@ -277,7 +285,7 @@ struct EmployeeDetailView: View {
 
     private func checkInIfNeeded() {
         guard employee.openEntry == nil else { return }
-        context.insert(TimeEntry(employee: employee, checkInAt: .now))
+        context.insert(TimeEntry(ownerUserID: employee.ownerUserID, employee: employee, checkInAt: .now))
         try? context.save()
         Haptics.success()
     }

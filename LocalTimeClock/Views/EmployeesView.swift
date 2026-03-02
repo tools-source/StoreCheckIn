@@ -18,10 +18,10 @@ struct EmployeesView: View {
     var body: some View {
         NavigationStack(path: $navigationPath) {
             Group {
-                if employees.isEmpty {
+                if visibleEmployees.isEmpty {
                     EmptyStateView(
                         title: "No Employees",
-                        subtitle: "Add an employee to start tracking local check-ins and payroll totals.",
+                        subtitle: "Add an employee to start tracking check-ins and payroll totals for this account.",
                         buttonTitle: "Add Employee",
                         systemImage: "person.badge.plus"
                     ) {
@@ -29,7 +29,7 @@ struct EmployeesView: View {
                     }
                 } else {
                     List {
-                        ForEach(employees) { employee in
+                        ForEach(visibleEmployees) { employee in
                             EmployeeCardView(employee: employee) {
                                 checkIn(employee)
                             } onCheckOut: {
@@ -66,7 +66,7 @@ struct EmployeesView: View {
             .background(Color(.systemGroupedBackground))
             .navigationTitle("Employees")
             .navigationDestination(for: UUID.self) { employeeID in
-                if let employee = employees.first(where: { $0.id == employeeID }) {
+                if let employee = visibleEmployees.first(where: { $0.id == employeeID }) {
                     EmployeeDetailView(employee: employee)
                 } else {
                     Text("Employee not found")
@@ -99,6 +99,9 @@ struct EmployeesView: View {
                             showClearAll = true
                         }
                         Button("Sign Out", role: .destructive) {
+                            Task {
+                                await ShiftReminderScheduler.removeAllEmployeeReminders()
+                            }
                             authController.signOut()
                         }
                     } label: {
@@ -115,21 +118,37 @@ struct EmployeesView: View {
             }
         }
         .sheet(isPresented: $showAddEmployee) {
-            EditEmployeeView(title: "Add Employee") { name, role, rate, notes, isActive in
-                let employee = Employee(name: name, roleOrTitle: role, hourlyRate: rate, notes: notes, isActive: isActive)
+            EditEmployeeView(title: "Add Employee") { name, role, rate, shiftStartMinutes, shiftEndMinutes, notes, isActive in
+                guard let currentUserID else { return }
+
+                let employee = Employee(
+                    ownerUserID: currentUserID,
+                    name: name,
+                    roleOrTitle: role,
+                    hourlyRate: rate,
+                    shiftStartMinutes: shiftStartMinutes,
+                    shiftEndMinutes: shiftEndMinutes,
+                    notes: notes,
+                    isActive: isActive
+                )
                 context.insert(employee)
                 try? context.save()
             }
         }
         .sheet(item: $employeeToEdit) { employee in
-            EditEmployeeView(employee: employee, title: "Edit Employee") { name, role, rate, notes, isActive in
+            EditEmployeeView(employee: employee, title: "Edit Employee") { name, role, rate, shiftStartMinutes, shiftEndMinutes, notes, isActive in
                 employee.name = name
                 employee.roleOrTitle = role
                 employee.hourlyRate = rate
+                employee.shiftStartMinutes = shiftStartMinutes
+                employee.shiftEndMinutes = shiftEndMinutes
                 employee.notes = notes
                 employee.isActive = isActive
                 try? context.save()
             }
+        }
+        .task(id: reminderSyncSignature) {
+            await ShiftReminderScheduler.syncReminders(for: visibleEmployees, ownerUserID: currentUserID)
         }
         .alert("Clear all time clock data?", isPresented: $showClearAll) {
             Button("Cancel", role: .cancel) {}
@@ -163,13 +182,15 @@ struct EmployeesView: View {
     }
 
     private func checkIn(_ employee: Employee) {
+        guard employee.ownerUserID == currentUserID else { return }
         guard employee.openEntry == nil else { return }
-        context.insert(TimeEntry(employee: employee, checkInAt: .now))
+        context.insert(TimeEntry(ownerUserID: employee.ownerUserID, employee: employee, checkInAt: .now))
         try? context.save()
         Haptics.success()
     }
 
     private func checkOut(_ employee: Employee) {
+        guard employee.ownerUserID == currentUserID else { return }
         guard let openEntry = employee.openEntry else { return }
         openEntry.checkOutAt = .now
         try? context.save()
@@ -177,19 +198,17 @@ struct EmployeesView: View {
     }
 
     private func delete(_ employee: Employee) {
+        guard employee.ownerUserID == currentUserID else { return }
         context.delete(employee)
         try? context.save()
     }
 
     private func clearAllTimeEntries() {
-        do {
-            let allEntries = try context.fetch(FetchDescriptor<TimeEntry>())
-            allEntries.forEach(context.delete)
+        visibleEmployees
+            .flatMap(\.entriesList)
+            .forEach(context.delete)
 
-            try context.save()
-        } catch {
-            assertionFailure("Failed to clear all time entries: \(error)")
-        }
+        try? context.save()
     }
 
     private var deleteAlertPresented: Binding<Bool> {
@@ -197,5 +216,28 @@ struct EmployeesView: View {
             get: { employeeToDelete != nil },
             set: { if !$0 { employeeToDelete = nil } }
         )
+    }
+
+    private var currentUserID: String? {
+        authController.session?.userID
+    }
+
+    private var visibleEmployees: [Employee] {
+        guard let currentUserID else { return [] }
+        return employees.filter { $0.ownerUserID == currentUserID }
+    }
+
+    private var reminderSyncSignature: String {
+        visibleEmployees
+            .map {
+                [
+                    $0.id.uuidString,
+                    $0.name,
+                    $0.isActive.description,
+                    String($0.shiftStartMinutes ?? -1),
+                    String($0.shiftEndMinutes ?? -1)
+                ].joined(separator: ":")
+            }
+            .joined(separator: "|")
     }
 }

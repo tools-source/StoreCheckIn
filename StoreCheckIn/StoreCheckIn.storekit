@@ -1,0 +1,45 @@
+{
+  "identifier" : "9D3A8F41",
+  "nonRenewingSubscriptions" : [],
+  "products" : [],
+  "settings" : {},
+  "subscriptionGroups" : [
+    {
+      "id" : "A5C7E2B1",
+      "localizations" : [
+        {
+          "description" : "Unlimited employee time tracking",
+          "displayName" : "StoreCheckIn Pro",
+          "locale" : "en_US"
+        }
+      ],
+      "name" : "StoreCheckIn Pro",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "9.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "C4B8D219",
+          "localizations" : [
+            {
+              "description" : "Unlimited employee time tracking",
+              "displayName" : "Pro Monthly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.Store.StoreCheckIn.pro.monthly.v2",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "StoreCheckIn Pro Monthly",
+          "subscriptionGroupID" : "A5C7E2B1",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 1,
+    "minor" : 2
+  }
+}

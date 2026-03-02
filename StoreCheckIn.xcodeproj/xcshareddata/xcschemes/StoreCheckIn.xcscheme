@@ -50,6 +50,9 @@
             ReferencedContainer = "container:StoreCheckIn.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <StoreKitConfigurationFileReference
+         identifier = "container:StoreCheckIn/StoreCheckIn.storekit">
+      </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

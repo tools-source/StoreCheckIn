@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct SubscriptionPaywallView: View {
+    @Environment(\.openURL) private var openURL
     @EnvironmentObject private var authController: AppAuthController
     @EnvironmentObject private var subscriptionController: SubscriptionController
 
@@ -29,7 +30,7 @@ struct SubscriptionPaywallView: View {
                         .font(.headline)
                         .foregroundStyle(.blue)
 
-                    Text("Charged through the App Store. Manual email accounts control app access only; subscription billing still uses the device’s App Store account.")
+                    Text("Charged through the App Store and managed with your Apple account on this device.")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
 
@@ -56,7 +57,17 @@ struct SubscriptionPaywallView: View {
                     }
                     .buttonStyle(.bordered)
 
+                    Button("Manage or Cancel Subscription") {
+                        if let url = URL(string: "https://apps.apple.com/account/subscriptions") {
+                            openURL(url)
+                        }
+                    }
+                    .buttonStyle(.bordered)
+
                     Button("Sign Out") {
+                        Task {
+                            await ShiftReminderScheduler.removeAllEmployeeReminders()
+                        }
                         authController.signOut()
                     }
                     .buttonStyle(.borderless)

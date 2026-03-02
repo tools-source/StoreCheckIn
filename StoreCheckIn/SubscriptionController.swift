@@ -3,7 +3,11 @@ import StoreKit
 
 @MainActor
 final class SubscriptionController: ObservableObject {
-    static let monthlyProductID = "com.Store.StoreCheckIn.pro.monthly"
+    static let monthlyProductID = "com.Store.StoreCheckIn.pro.monthly.v2"
+    static let legacyMonthlyProductIDs = ["com.Store.StoreCheckIn.pro.monthly"]
+    static let supportedMonthlyProductIDs = [monthlyProductID] + legacyMonthlyProductIDs
+    private static let entitlementPropagationGraceWindow: TimeInterval = 8
+    private static let entitlementRetryDelayNanoseconds: UInt64 = 1_000_000_000
 
     @Published private(set) var products: [Product] = []
     @Published private(set) var purchasedProductIDs: Set<String> = []
@@ -12,6 +16,7 @@ final class SubscriptionController: ObservableObject {
     @Published var errorMessage: String?
 
     private var updatesTask: Task<Void, Never>?
+    private var lastKnownPurchaseDate: Date?
 
     init() {
         updatesTask = observeTransactionUpdates()
@@ -26,11 +31,15 @@ final class SubscriptionController: ObservableObject {
     }
 
     var hasActiveSubscription: Bool {
-        purchasedProductIDs.contains(Self.monthlyProductID)
+        !purchasedProductIDs.isDisjoint(with: Set(Self.supportedMonthlyProductIDs))
     }
 
     var monthlyProduct: Product? {
-        products.first(where: { $0.id == Self.monthlyProductID })
+        if let preferredProduct = products.first(where: { $0.id == Self.monthlyProductID }) {
+            return preferredProduct
+        }
+
+        return products.first(where: { Self.legacyMonthlyProductIDs.contains($0.id) })
     }
 
     var monthlyDisplayPrice: String {
@@ -42,7 +51,7 @@ final class SubscriptionController: ObservableObject {
     }
 
     var statusSummary: String {
-        hasActiveSubscription ? "Subscription active" : "Subscription inactive"
+        return hasActiveSubscription ? "Subscription active" : "Subscription inactive"
     }
 
     func bootstrap() async {
@@ -54,7 +63,7 @@ final class SubscriptionController: ObservableObject {
 
     func requestProducts() async {
         do {
-            products = try await Product.products(for: [Self.monthlyProductID])
+            products = try await Product.products(for: Self.supportedMonthlyProductIDs)
             if products.isEmpty {
                 errorMessage = "Monthly subscription product is not available yet."
             } else {
@@ -66,22 +75,30 @@ final class SubscriptionController: ObservableObject {
     }
 
     func refreshEntitlements() async {
-        var newProductIDs: Set<String> = []
+        let newProductIDs = await fetchActiveEntitlements()
 
-        for await result in Transaction.currentEntitlements {
-            guard case .verified(let transaction) = result else { continue }
-            guard transaction.revocationDate == nil else { continue }
-            guard !transaction.isUpgraded else { continue }
-
-            newProductIDs.insert(transaction.productID)
+        if shouldPreserveCurrentEntitlements(for: newProductIDs) {
+            Task {
+                try? await Task.sleep(nanoseconds: Self.entitlementRetryDelayNanoseconds)
+                await refreshEntitlements()
+            }
+            return
         }
 
-        purchasedProductIDs = newProductIDs
+        purchasedProductIDs = mergedProductIDs(with: newProductIDs)
     }
 
     func purchaseMonthlyPlan() async {
         if monthlyProduct == nil {
             await requestProducts()
+        }
+
+        await finishUnfinishedSupportedTransactions()
+        await refreshEntitlements()
+
+        if hasActiveSubscription {
+            errorMessage = nil
+            return
         }
 
         guard let product = monthlyProduct else {
@@ -98,9 +115,15 @@ final class SubscriptionController: ObservableObject {
             switch result {
             case .success(let verification):
                 let transaction = try checkVerified(verification)
-                errorMessage = nil
-                purchasedProductIDs.insert(transaction.productID)
+                if isActiveEntitlement(transaction) {
+                    errorMessage = nil
+                    applyVerifiedEntitlement(from: transaction)
+                }
                 await transaction.finish()
+                await refreshEntitlements()
+                if !hasActiveSubscription {
+                    errorMessage = "Subscription did not activate. In Sandbox, clear purchase history or sign out and back in to the Sandbox Apple Account, then try again."
+                }
             case .pending:
                 errorMessage = "Purchase is pending approval."
             case .userCancelled:
@@ -130,11 +153,68 @@ final class SubscriptionController: ObservableObject {
         }
     }
 
+    private func fetchActiveEntitlements() async -> Set<String> {
+        var newProductIDs: Set<String> = []
+
+        for await result in Transaction.currentEntitlements {
+            guard case .verified(let transaction) = result else { continue }
+            guard Self.supportedMonthlyProductIDs.contains(transaction.productID) else { continue }
+            guard isActiveEntitlement(transaction) else { continue }
+
+            newProductIDs.insert(transaction.productID)
+        }
+
+        return mergedProductIDs(with: newProductIDs)
+    }
+
+    private func finishUnfinishedSupportedTransactions() async {
+        for await result in Transaction.unfinished {
+            switch result {
+            case .verified(let transaction):
+                guard Self.supportedMonthlyProductIDs.contains(transaction.productID) else { continue }
+                await transaction.finish()
+            case .unverified:
+                continue
+            }
+        }
+    }
+
+    private func mergedProductIDs(with productIDs: Set<String>) -> Set<String> {
+        productIDs
+    }
+
+    private func applyVerifiedEntitlement(from transaction: Transaction) {
+        guard Self.supportedMonthlyProductIDs.contains(transaction.productID) else { return }
+        guard isActiveEntitlement(transaction) else { return }
+        lastKnownPurchaseDate = .now
+        purchasedProductIDs.insert(transaction.productID)
+    }
+
+    private func shouldPreserveCurrentEntitlements(for newProductIDs: Set<String>) -> Bool {
+        guard newProductIDs.isEmpty else { return false }
+        guard !purchasedProductIDs.isDisjoint(with: Set(Self.supportedMonthlyProductIDs)) else { return false }
+        guard let lastKnownPurchaseDate else { return false }
+
+        return Date.now.timeIntervalSince(lastKnownPurchaseDate) < Self.entitlementPropagationGraceWindow
+    }
+
+    private func isActiveEntitlement(_ transaction: Transaction) -> Bool {
+        guard transaction.revocationDate == nil else { return false }
+        guard !transaction.isUpgraded else { return false }
+
+        if let expirationDate = transaction.expirationDate {
+            return expirationDate > .now
+        }
+
+        return true
+    }
+
     private func observeTransactionUpdates() -> Task<Void, Never> {
         Task {
             for await result in Transaction.updates {
                 do {
                     let transaction = try checkVerified(result)
+                    applyVerifiedEntitlement(from: transaction)
                     await transaction.finish()
                     await refreshEntitlements()
                 } catch {

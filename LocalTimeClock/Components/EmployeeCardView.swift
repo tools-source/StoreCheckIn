@@ -36,6 +36,12 @@ struct EmployeeCardView: View {
                 }
             }
 
+            if let shiftSummary = employee.shiftSummary {
+                Label(shiftSummary, systemImage: "clock")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
             HStack(spacing: 10) {
                 Button("Check In", action: onCheckIn)
                     .buttonStyle(.borderedProminent)

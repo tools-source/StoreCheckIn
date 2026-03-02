@@ -1,6 +1,8 @@
 import Foundation
 
 enum Formatters {
+    private static let calendar = Calendar.current
+
     static let timestamp: DateFormatter = {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
@@ -64,6 +66,10 @@ enum Formatters {
         timeStamp.string(from: date)
     }
 
+    static func time(minutesSinceMidnight: Int) -> String {
+        time(timeOfDayDate(from: minutesSinceMidnight))
+    }
+
     static func readableDate(_ date: Date) -> String {
         readableDateStamp.string(from: date)
     }
@@ -101,5 +107,23 @@ enum Formatters {
 
     static func pay(seconds: TimeInterval, hourlyRate: Double) -> Double {
         (seconds / 3600.0) * hourlyRate
+    }
+
+    static func shift(startMinutes: Int?, endMinutes: Int?) -> String? {
+        guard let startMinutes, let endMinutes else { return nil }
+        return "\(time(minutesSinceMidnight: startMinutes)) - \(time(minutesSinceMidnight: endMinutes))"
+    }
+
+    static func minutesSinceMidnight(for date: Date) -> Int {
+        let components = calendar.dateComponents([.hour, .minute], from: date)
+        return (components.hour ?? 0) * 60 + (components.minute ?? 0)
+    }
+
+    static func timeOfDayDate(from minutesSinceMidnight: Int) -> Date {
+        let normalizedMinutes = ((minutesSinceMidnight % 1440) + 1440) % 1440
+        let hours = normalizedMinutes / 60
+        let minutes = normalizedMinutes % 60
+        let components = DateComponents(hour: hours, minute: minutes)
+        return calendar.date(from: components) ?? .now
     }
 }

@@ -4,6 +4,7 @@ import SwiftData
 @Model
 final class TimeEntry {
     var id: UUID = UUID()
+    var ownerUserID: String?
     var employee: Employee?
     var checkInAt: Date = Date.now
     var checkOutAt: Date?
@@ -11,12 +12,14 @@ final class TimeEntry {
 
     init(
         id: UUID = UUID(),
+        ownerUserID: String? = nil,
         employee: Employee? = nil,
         checkInAt: Date = .now,
         checkOutAt: Date? = nil,
         createdAt: Date = .now
     ) {
         self.id = id
+        self.ownerUserID = ownerUserID
         self.employee = employee
         self.checkInAt = checkInAt
         self.checkOutAt = checkOutAt
