@@ -3,16 +3,16 @@ import SwiftData
 
 @Model
 final class Employee {
-    @Attribute(.unique) var id: UUID
-    var createdAt: Date
-    var name: String
+    var id: UUID = UUID()
+    var createdAt: Date = Date.now
+    var name: String = ""
     var roleOrTitle: String?
-    var hourlyRate: Double
+    var hourlyRate: Double = 0
     var notes: String?
-    var isActive: Bool
+    var isActive: Bool = true
 
     @Relationship(deleteRule: .cascade, inverse: \TimeEntry.employee)
-    var entries: [TimeEntry]
+    var entries: [TimeEntry]?
 
     init(
         id: UUID = UUID(),
@@ -34,11 +34,15 @@ final class Employee {
         self.entries = entries
     }
 
+    var entriesList: [TimeEntry] {
+        entries ?? []
+    }
+
     var openEntry: TimeEntry? {
-        entries.first(where: { $0.checkOutAt == nil })
+        entriesList.first(where: { $0.checkOutAt == nil })
     }
 
     var sortedEntriesNewestFirst: [TimeEntry] {
-        entries.sorted { $0.checkInAt > $1.checkInAt }
+        entriesList.sorted { $0.checkInAt > $1.checkInAt }
     }
 }

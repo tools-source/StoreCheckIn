@@ -3,6 +3,9 @@ import SwiftData
 
 struct EmployeesView: View {
     @Environment(\.modelContext) private var context
+    @Environment(\.openURL) private var openURL
+    @EnvironmentObject private var authController: AppAuthController
+    @EnvironmentObject private var subscriptionController: SubscriptionController
     @Query(sort: \Employee.createdAt, order: .reverse) private var employees: [Employee]
 
     @State private var navigationPath: [UUID] = []
@@ -72,8 +75,34 @@ struct EmployeesView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Clear All", role: .destructive) {
-                        showClearAll = true
+                    Menu {
+                        Text(authController.accountSummary)
+                        Text(authController.providerSummary)
+                        Text(subscriptionController.statusSummary)
+                        Button("Refresh Account Status") {
+                            Task {
+                                await authController.refreshSessionState()
+                            }
+                        }
+                        Button("Restore Purchases") {
+                            Task {
+                                await subscriptionController.restorePurchases()
+                            }
+                        }
+                        Button("Manage Subscription") {
+                            if let url = URL(string: "https://apps.apple.com/account/subscriptions") {
+                                openURL(url)
+                            }
+                        }
+                        Divider()
+                        Button("Clear All Time Entries", role: .destructive) {
+                            showClearAll = true
+                        }
+                        Button("Sign Out", role: .destructive) {
+                            authController.signOut()
+                        }
+                    } label: {
+                        Image(systemName: "person.crop.circle")
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {

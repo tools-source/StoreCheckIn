@@ -3,11 +3,11 @@ import SwiftData
 
 @Model
 final class TimeEntry {
-    @Attribute(.unique) var id: UUID
+    var id: UUID = UUID()
     var employee: Employee?
-    var checkInAt: Date
+    var checkInAt: Date = Date.now
     var checkOutAt: Date?
-    var createdAt: Date
+    var createdAt: Date = Date.now
 
     init(
         id: UUID = UUID(),

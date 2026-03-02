@@ -22,6 +22,10 @@
 		A1000001000000000000000D /* LocalTimeClockTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001000000000000000D /* LocalTimeClockTabView.swift */; };
 		A1000001000000000000000E /* TimeClockRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001000000000000000E /* TimeClockRootView.swift */; };
 		A1000001000000000000000F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000010 /* Assets.xcassets */; };
+		A10000010000000000000010 /* AppleSignInController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000011 /* AppleSignInController.swift */; };
+		A10000010000000000000011 /* AppleSignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000012 /* AppleSignInView.swift */; };
+		A10000010000000000000012 /* SubscriptionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000014 /* SubscriptionController.swift */; };
+		A10000010000000000000013 /* SubscriptionPaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010000000000000015 /* SubscriptionPaywallView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +45,11 @@
 		B1000001000000000000000E /* TimeClockRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeClockRootView.swift; sourceTree = "<group>"; };
 		B1000001000000000000000F /* StoreCheckIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StoreCheckIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B10000010000000000000010 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B10000010000000000000011 /* AppleSignInController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInController.swift; sourceTree = "<group>"; };
+		B10000010000000000000012 /* AppleSignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInView.swift; sourceTree = "<group>"; };
+		B10000010000000000000013 /* StoreCheckIn.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StoreCheckIn.entitlements; sourceTree = "<group>"; };
+		B10000010000000000000014 /* SubscriptionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionController.swift; sourceTree = "<group>"; };
+		B10000010000000000000015 /* SubscriptionPaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionPaywallView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +76,11 @@
 			isa = PBXGroup;
 			children = (
 				B10000010000000000000001 /* StoreCheckInApp.swift */,
+				B10000010000000000000011 /* AppleSignInController.swift */,
+				B10000010000000000000012 /* AppleSignInView.swift */,
+				B10000010000000000000014 /* SubscriptionController.swift */,
+				B10000010000000000000015 /* SubscriptionPaywallView.swift */,
+				B10000010000000000000013 /* StoreCheckIn.entitlements */,
 				B10000010000000000000010 /* Assets.xcassets */,
 			);
 			path = StoreCheckIn;
@@ -215,6 +229,10 @@
 				A1000001000000000000000C /* EmployeesView.swift in Sources */,
 				A1000001000000000000000D /* LocalTimeClockTabView.swift in Sources */,
 				A1000001000000000000000E /* TimeClockRootView.swift in Sources */,
+				A10000010000000000000010 /* AppleSignInController.swift in Sources */,
+				A10000010000000000000011 /* AppleSignInView.swift in Sources */,
+				A10000010000000000000012 /* SubscriptionController.swift in Sources */,
+				A10000010000000000000013 /* SubscriptionPaywallView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,6 +280,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = StoreCheckIn/StoreCheckIn.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -277,7 +296,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.majdinagi.StoreCheckIn;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Store.StoreCheckIn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -292,6 +311,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = StoreCheckIn/StoreCheckIn.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -307,7 +327,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.majdinagi.StoreCheckIn;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Store.StoreCheckIn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

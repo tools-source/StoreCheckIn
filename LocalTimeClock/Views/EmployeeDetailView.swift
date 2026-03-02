@@ -92,7 +92,7 @@ struct EmployeeDetailView: View {
         .alert("Clear this employee's timesheet?", isPresented: $showClearTimesheet) {
             Button("Cancel", role: .cancel) {}
             Button("Clear", role: .destructive) {
-                employee.entries.forEach(context.delete)
+                employee.entriesList.forEach(context.delete)
                 try? context.save()
             }
         }
