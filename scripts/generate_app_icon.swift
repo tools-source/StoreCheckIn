@@ -88,25 +88,22 @@ func checkmark(in rect: CGRect, lineWidth: CGFloat, color: NSColor) {
 }
 
 func renderIcon(edge: Int, destination: URL) throws {
-    guard let bitmap = NSBitmapImageRep(
-        bitmapDataPlanes: nil,
-        pixelsWide: edge,
-        pixelsHigh: edge,
-        bitsPerSample: 8,
-        samplesPerPixel: 4,
-        hasAlpha: true,
-        isPlanar: false,
-        colorSpaceName: .deviceRGB,
+    let colorSpace = CGColorSpaceCreateDeviceRGB()
+    let bitmapInfo = CGImageAlphaInfo.noneSkipFirst.rawValue | CGBitmapInfo.byteOrder32Big.rawValue
+
+    guard let cgContext = CGContext(
+        data: nil,
+        width: edge,
+        height: edge,
+        bitsPerComponent: 8,
         bytesPerRow: 0,
-        bitsPerPixel: 0
+        space: colorSpace,
+        bitmapInfo: bitmapInfo
     ) else {
         throw NSError(domain: "IconGenerator", code: 1)
     }
 
-    bitmap.size = NSSize(width: edge, height: edge)
-    guard let context = NSGraphicsContext(bitmapImageRep: bitmap) else {
-        throw NSError(domain: "IconGenerator", code: 2)
-    }
+    let context = NSGraphicsContext(cgContext: cgContext, flipped: false)
 
     NSGraphicsContext.saveGraphicsState()
     NSGraphicsContext.current = context
@@ -114,19 +111,15 @@ func renderIcon(edge: Int, destination: URL) throws {
     let edge = CGFloat(edge)
     let canvas = CGRect(x: 0, y: 0, width: edge, height: edge)
 
-    let shellRect = canvas.insetBy(dx: edge * 0.01, dy: edge * 0.01)
-    let shellPath = roundedRect(shellRect, radius: edge * 0.12)
-
     let shellGradient = NSGradient(colors: [
         rgba(139, 227, 249),
         rgba(63, 140, 241),
         rgba(23, 39, 170),
         rgba(4, 72, 100)
     ])!
-    shellGradient.draw(in: shellPath, angle: -34)
-    stroke(shellRect, radius: edge * 0.12, color: rgba(124, 214, 255, 0.50), lineWidth: max(1, edge * 0.004))
+    shellGradient.draw(in: NSBezierPath(rect: canvas), angle: -34)
 
-    let innerGlow = CGRect(x: shellRect.minX + edge * 0.02, y: shellRect.maxY - edge * 0.16, width: edge * 0.18, height: edge * 0.12)
+    let innerGlow = CGRect(x: edge * 0.03, y: edge * 0.84, width: edge * 0.18, height: edge * 0.12)
     circle(innerGlow, color: rgba(255, 255, 255, 0.14))
 
     let clockCenter = CGPoint(x: edge * 0.50, y: edge * 0.64)
@@ -231,8 +224,14 @@ func renderIcon(edge: Int, destination: URL) throws {
 
     NSGraphicsContext.restoreGraphicsState()
 
-    guard let data = bitmap.representation(using: .png, properties: [:]) else {
+    guard let image = cgContext.makeImage() else {
         throw NSError(domain: "IconGenerator", code: 3)
+    }
+    let bitmap = NSBitmapImageRep(cgImage: image)
+    guard let jpegData = bitmap.representation(using: .jpeg, properties: [.compressionFactor: 1.0]),
+          let opaqueBitmap = NSBitmapImageRep(data: jpegData),
+          let data = opaqueBitmap.representation(using: .png, properties: [:]) else {
+        throw NSError(domain: "IconGenerator", code: 4)
     }
     try data.write(to: destination)
 }
