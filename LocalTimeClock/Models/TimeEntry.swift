@@ -4,31 +4,27 @@ import SwiftData
 @Model
 final class TimeEntry {
     @Attribute(.unique) var id: UUID
+    var employee: Employee?
     var checkInAt: Date
     var checkOutAt: Date?
     var createdAt: Date
-    var source: String?
-
-    var employee: Employee?
 
     init(
         id: UUID = UUID(),
+        employee: Employee? = nil,
         checkInAt: Date = .now,
         checkOutAt: Date? = nil,
-        createdAt: Date = .now,
-        source: String? = "Manual",
-        employee: Employee? = nil
+        createdAt: Date = .now
     ) {
         self.id = id
+        self.employee = employee
         self.checkInAt = checkInAt
         self.checkOutAt = checkOutAt
         self.createdAt = createdAt
-        self.source = source
-        self.employee = employee
     }
 
-    var duration: TimeInterval? {
+    var durationSeconds: TimeInterval? {
         guard let checkOutAt else { return nil }
-        return checkOutAt.timeIntervalSince(checkInAt)
+        return max(0, checkOutAt.timeIntervalSince(checkInAt))
     }
 }

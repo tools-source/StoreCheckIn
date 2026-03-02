@@ -7,22 +7,22 @@ final class Employee {
     var createdAt: Date
     var name: String
     var roleOrTitle: String?
-    var hourlyRate: Decimal
+    var hourlyRate: Double
     var notes: String?
     var isActive: Bool
 
     @Relationship(deleteRule: .cascade, inverse: \TimeEntry.employee)
-    var timeEntries: [TimeEntry]
+    var entries: [TimeEntry]
 
     init(
         id: UUID = UUID(),
         createdAt: Date = .now,
         name: String,
         roleOrTitle: String? = nil,
-        hourlyRate: Decimal,
+        hourlyRate: Double,
         notes: String? = nil,
         isActive: Bool = true,
-        timeEntries: [TimeEntry] = []
+        entries: [TimeEntry] = []
     ) {
         self.id = id
         self.createdAt = createdAt
@@ -31,14 +31,14 @@ final class Employee {
         self.hourlyRate = hourlyRate
         self.notes = notes
         self.isActive = isActive
-        self.timeEntries = timeEntries
-    }
-
-    var sortedEntriesNewestFirst: [TimeEntry] {
-        timeEntries.sorted { $0.checkInAt > $1.checkInAt }
+        self.entries = entries
     }
 
     var openEntry: TimeEntry? {
-        timeEntries.first(where: { $0.checkOutAt == nil })
+        entries.first(where: { $0.checkOutAt == nil })
+    }
+
+    var sortedEntriesNewestFirst: [TimeEntry] {
+        entries.sorted { $0.checkInAt > $1.checkInAt }
     }
 }
