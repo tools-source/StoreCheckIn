@@ -1,0 +1,80 @@
+{
+  "source": "/Users/majdinagi/Documents/StoreCheckIn/LocalTimeClock/Views/EmployeeDetailView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Clear this employee's timesheet?",
+        "location": {
+          "startingColumn": 16,
+          "startingLine": 85
+        }
+      },
+      {
+        "comment": "",
+        "key": "Actions",
+        "location": {
+          "startingColumn": 21,
+          "startingLine": 23
+        }
+      },
+      {
+        "comment": "",
+        "key": "Timesheet",
+        "location": {
+          "startingColumn": 21,
+          "startingLine": 45
+        }
+      },
+      {
+        "comment": "",
+        "key": "Copy Timesheet as Text",
+        "location": {
+          "startingColumn": 24,
+          "startingLine": 24
+        }
+      },
+      {
+        "comment": "",
+        "key": "Export CSV",
+        "location": {
+          "startingColumn": 24,
+          "startingLine": 28
+        }
+      },
+      {
+        "comment": "",
+        "key": "Clear Timesheet",
+        "location": {
+          "startingColumn": 24,
+          "startingLine": 40
+        }
+      },
+      {
+        "comment": "",
+        "key": "Edit",
+        "location": {
+          "startingColumn": 24,
+          "startingLine": 66
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cancel",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 86
+        }
+      },
+      {
+        "comment": "",
+        "key": "Clear",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 87
+        }
+      }
+    ]
+  },
+  "version": 1
+}

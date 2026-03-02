@@ -1,0 +1,56 @@
+{
+  "source": "/Users/majdinagi/Documents/StoreCheckIn/LocalTimeClock/Components/EmployeeCardView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Not Checked In",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 68
+        }
+      },
+      {
+        "comment": "",
+        "key": "Checked In",
+        "location": {
+          "startingColumn": 61,
+          "startingLine": 68
+        }
+      },
+      {
+        "comment": "",
+        "key": "Rate: %@/hr",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 28
+        }
+      },
+      {
+        "comment": "",
+        "key": "Live: %@",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 34
+        }
+      },
+      {
+        "comment": "",
+        "key": "Check In",
+        "location": {
+          "startingColumn": 24,
+          "startingLine": 40
+        }
+      },
+      {
+        "comment": "",
+        "key": "Check Out",
+        "location": {
+          "startingColumn": 24,
+          "startingLine": 44
+        }
+      }
+    ]
+  },
+  "version": 1
+}

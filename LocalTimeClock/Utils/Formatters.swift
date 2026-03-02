@@ -15,6 +15,34 @@ enum Formatters {
         return formatter
     }()
 
+    static let dayStamp: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "EEEE"
+        return formatter
+    }()
+
+    static let timeStamp: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "h:mm a"
+        return formatter
+    }()
+
+    static let readableDateStamp: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter
+    }()
+
+    static let readableDateTimeStamp: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter
+    }()
+
     static let currency: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
@@ -26,6 +54,22 @@ enum Formatters {
 
     static func dateTime(_ date: Date) -> String {
         timestamp.string(from: date)
+    }
+
+    static func day(_ date: Date) -> String {
+        dayStamp.string(from: date)
+    }
+
+    static func time(_ date: Date) -> String {
+        timeStamp.string(from: date)
+    }
+
+    static func readableDate(_ date: Date) -> String {
+        readableDateStamp.string(from: date)
+    }
+
+    static func readableDateTime(_ date: Date) -> String {
+        readableDateTimeStamp.string(from: date)
     }
 
     static func hhmmss(seconds: TimeInterval) -> String {

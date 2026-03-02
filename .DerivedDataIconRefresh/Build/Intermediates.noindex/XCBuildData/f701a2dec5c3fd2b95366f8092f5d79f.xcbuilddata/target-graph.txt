@@ -1,0 +1,2 @@
+Target dependency graph (1 target)
+Target 'StoreCheckIn' in project 'StoreCheckIn' (no dependencies)

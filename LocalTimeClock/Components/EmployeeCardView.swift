@@ -70,7 +70,7 @@ struct EmployeeCardView: View {
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
             .background(employee.openEntry == nil ? Color.gray.opacity(0.2) : Color.green.opacity(0.2))
-            .foregroundStyle(employee.openEntry == nil ? .secondary : .green)
+            .foregroundStyle(employee.openEntry == nil ? Color.secondary : Color.green)
             .clipShape(Capsule())
     }
 }

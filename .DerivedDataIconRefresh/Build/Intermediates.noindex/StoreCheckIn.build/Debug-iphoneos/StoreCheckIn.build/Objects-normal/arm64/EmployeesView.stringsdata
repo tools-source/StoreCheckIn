@@ -1,0 +1,152 @@
+{
+  "source": "/Users/majdinagi/Documents/StoreCheckIn/LocalTimeClock/Views/EmployeesView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Clear all time clock data?",
+        "location": {
+          "startingColumn": 16,
+          "startingLine": 105
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete employee?",
+        "location": {
+          "startingColumn": 16,
+          "startingLine": 113
+        }
+      },
+      {
+        "comment": "",
+        "key": "Final confirmation",
+        "location": {
+          "startingColumn": 16,
+          "startingLine": 126
+        }
+      },
+      {
+        "comment": "",
+        "key": "Employees",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 64
+        }
+      },
+      {
+        "comment": "",
+        "key": "Edit",
+        "location": {
+          "startingColumn": 43,
+          "startingLine": 43
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete",
+        "location": {
+          "startingColumn": 43,
+          "startingLine": 51
+        }
+      },
+      {
+        "comment": "",
+        "key": "Employee not found",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 69
+        }
+      },
+      {
+        "comment": "",
+        "key": "Clear All",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 75
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add Employee",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 83
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cancel",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 106
+        }
+      },
+      {
+        "comment": "",
+        "key": "Continue",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 107
+        }
+      },
+      {
+        "comment": "",
+        "key": "This clears all employee check-in and check-out history.",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 111
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cancel",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 114
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 117
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete %@ and all time entries?",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 124
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cancel",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 127
+        }
+      },
+      {
+        "comment": "",
+        "key": "Clear Time Entries",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 128
+        }
+      },
+      {
+        "comment": "",
+        "key": "Employees will stay. Only their check-in and check-out records will be removed.",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 132
+        }
+      }
+    ]
+  },
+  "version": 1
+}

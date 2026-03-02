@@ -5,12 +5,15 @@ struct EmployeesView: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \Employee.createdAt, order: .reverse) private var employees: [Employee]
 
+    @State private var navigationPath: [UUID] = []
     @State private var showAddEmployee = false
     @State private var showClearAll = false
     @State private var showClearAllAgain = false
+    @State private var employeeToEdit: Employee?
+    @State private var employeeToDelete: Employee?
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             Group {
                 if employees.isEmpty {
                     EmptyStateView(
@@ -22,27 +25,51 @@ struct EmployeesView: View {
                         showAddEmployee = true
                     }
                 } else {
-                    ScrollView {
-                        LazyVStack(spacing: 12) {
-                            ForEach(employees) { employee in
-                                NavigationLink {
-                                    EmployeeDetailView(employee: employee)
-                                } label: {
-                                    EmployeeCardView(employee: employee) {
-                                        checkIn(employee)
-                                    } onCheckOut: {
-                                        checkOut(employee)
-                                    }
-                                }
-                                .buttonStyle(.plain)
+                    List {
+                        ForEach(employees) { employee in
+                            EmployeeCardView(employee: employee) {
+                                checkIn(employee)
+                            } onCheckOut: {
+                                checkOut(employee)
                             }
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                navigationPath.append(employee.id)
+                            }
+                            .swipeActions(edge: .leading, allowsFullSwipe: false) {
+                                Button {
+                                    employeeToEdit = employee
+                                } label: {
+                                    Label("Edit", systemImage: "pencil")
+                                }
+                                .tint(.blue)
+                            }
+                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                Button(role: .destructive) {
+                                    employeeToDelete = employee
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
+                                }
+                            }
+                            .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.clear)
                         }
-                        .padding()
                     }
+                    .listStyle(.plain)
+                    .scrollContentBackground(.hidden)
                 }
             }
             .background(Color(.systemGroupedBackground))
             .navigationTitle("Employees")
+            .navigationDestination(for: UUID.self) { employeeID in
+                if let employee = employees.first(where: { $0.id == employeeID }) {
+                    EmployeeDetailView(employee: employee)
+                } else {
+                    Text("Employee not found")
+                        .foregroundStyle(.secondary)
+                }
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Clear All", role: .destructive) {
@@ -65,21 +92,44 @@ struct EmployeesView: View {
                 try? context.save()
             }
         }
+        .sheet(item: $employeeToEdit) { employee in
+            EditEmployeeView(employee: employee, title: "Edit Employee") { name, role, rate, notes, isActive in
+                employee.name = name
+                employee.roleOrTitle = role
+                employee.hourlyRate = rate
+                employee.notes = notes
+                employee.isActive = isActive
+                try? context.save()
+            }
+        }
         .alert("Clear all time clock data?", isPresented: $showClearAll) {
             Button("Cancel", role: .cancel) {}
             Button("Continue", role: .destructive) {
                 showClearAllAgain = true
             }
         } message: {
-            Text("This deletes all employees and all entries.")
+            Text("This clears all employee check-in and check-out history.")
+        }
+        .alert("Delete employee?", isPresented: deleteAlertPresented) {
+            Button("Cancel", role: .cancel) {
+                employeeToDelete = nil
+            }
+            Button("Delete", role: .destructive) {
+                if let employeeToDelete {
+                    delete(employeeToDelete)
+                }
+                employeeToDelete = nil
+            }
+        } message: {
+            Text("Delete \(employeeToDelete?.name ?? "this employee") and all time entries?")
         }
         .alert("Final confirmation", isPresented: $showClearAllAgain) {
             Button("Cancel", role: .cancel) {}
-            Button("Delete Everything", role: .destructive) {
-                clearAllData()
+            Button("Clear Time Entries", role: .destructive) {
+                clearAllTimeEntries()
             }
         } message: {
-            Text("This action cannot be undone.")
+            Text("Employees will stay. Only their check-in and check-out records will be removed.")
         }
     }
 
@@ -97,17 +147,26 @@ struct EmployeesView: View {
         Haptics.success()
     }
 
-    private func clearAllData() {
-        do {
-            let allEmployees = try context.fetch(FetchDescriptor<Employee>())
-            allEmployees.forEach(context.delete)
+    private func delete(_ employee: Employee) {
+        context.delete(employee)
+        try? context.save()
+    }
 
+    private func clearAllTimeEntries() {
+        do {
             let allEntries = try context.fetch(FetchDescriptor<TimeEntry>())
             allEntries.forEach(context.delete)
 
             try context.save()
         } catch {
-            assertionFailure("Failed to clear all data: \(error)")
+            assertionFailure("Failed to clear all time entries: \(error)")
         }
+    }
+
+    private var deleteAlertPresented: Binding<Bool> {
+        Binding(
+            get: { employeeToDelete != nil },
+            set: { if !$0 { employeeToDelete = nil } }
+        )
     }
 }

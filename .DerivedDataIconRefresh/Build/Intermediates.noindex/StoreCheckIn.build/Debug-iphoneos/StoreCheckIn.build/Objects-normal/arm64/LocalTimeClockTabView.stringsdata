@@ -1,0 +1,16 @@
+{
+  "source": "/Users/majdinagi/Documents/StoreCheckIn/LocalTimeClock/Views/LocalTimeClockTabView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Time Clock",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 8
+        }
+      }
+    ]
+  },
+  "version": 1
+}

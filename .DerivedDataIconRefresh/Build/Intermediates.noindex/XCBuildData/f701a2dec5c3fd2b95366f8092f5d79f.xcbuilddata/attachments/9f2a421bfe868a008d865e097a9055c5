@@ -1,0 +1,159 @@
+{
+  "" : {
+    "diagnostics" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/StoreCheckIn-primary.dia",
+    "emit-module-dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/StoreCheckIn-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/StoreCheckIn-primary-emit-module.dia",
+    "pch" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/StoreCheckIn-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/StoreCheckIn-primary.swiftdeps"
+  },
+  "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/GeneratedAssetSymbols~partial.swiftmodule"
+  },
+  "/Users/majdinagi/Documents/StoreCheckIn/LocalTimeClock/Components/EmployeeCardView.swift" : {
+    "const-values" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeeCardView.swiftconstvalues",
+    "dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeeCardView.d",
+    "diagnostics" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeeCardView.dia",
+    "index-unit-output-path" : "/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeeCardView.o",
+    "llvm-bc" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeeCardView.bc",
+    "object" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeeCardView.o",
+    "swift-dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeeCardView.swiftdeps",
+    "swiftmodule" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeeCardView~partial.swiftmodule"
+  },
+  "/Users/majdinagi/Documents/StoreCheckIn/LocalTimeClock/Components/EmptyStateView.swift" : {
+    "const-values" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmptyStateView.swiftconstvalues",
+    "dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmptyStateView.d",
+    "diagnostics" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmptyStateView.dia",
+    "index-unit-output-path" : "/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmptyStateView.o",
+    "llvm-bc" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmptyStateView.bc",
+    "object" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmptyStateView.o",
+    "swift-dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmptyStateView.swiftdeps",
+    "swiftmodule" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmptyStateView~partial.swiftmodule"
+  },
+  "/Users/majdinagi/Documents/StoreCheckIn/LocalTimeClock/LocalTimeClockModule.swift" : {
+    "const-values" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/LocalTimeClockModule.swiftconstvalues",
+    "dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/LocalTimeClockModule.d",
+    "diagnostics" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/LocalTimeClockModule.dia",
+    "index-unit-output-path" : "/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/LocalTimeClockModule.o",
+    "llvm-bc" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/LocalTimeClockModule.bc",
+    "object" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/LocalTimeClockModule.o",
+    "swift-dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/LocalTimeClockModule.swiftdeps",
+    "swiftmodule" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/LocalTimeClockModule~partial.swiftmodule"
+  },
+  "/Users/majdinagi/Documents/StoreCheckIn/LocalTimeClock/Models/Employee.swift" : {
+    "const-values" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Employee.swiftconstvalues",
+    "dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Employee.d",
+    "diagnostics" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Employee.dia",
+    "index-unit-output-path" : "/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Employee.o",
+    "llvm-bc" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Employee.bc",
+    "object" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Employee.o",
+    "swift-dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Employee.swiftdeps",
+    "swiftmodule" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Employee~partial.swiftmodule"
+  },
+  "/Users/majdinagi/Documents/StoreCheckIn/LocalTimeClock/Models/TimeEntry.swift" : {
+    "const-values" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/TimeEntry.swiftconstvalues",
+    "dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/TimeEntry.d",
+    "diagnostics" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/TimeEntry.dia",
+    "index-unit-output-path" : "/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/TimeEntry.o",
+    "llvm-bc" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/TimeEntry.bc",
+    "object" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/TimeEntry.o",
+    "swift-dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/TimeEntry.swiftdeps",
+    "swiftmodule" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/TimeEntry~partial.swiftmodule"
+  },
+  "/Users/majdinagi/Documents/StoreCheckIn/LocalTimeClock/Utils/Exporters.swift" : {
+    "const-values" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Exporters.swiftconstvalues",
+    "dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Exporters.d",
+    "diagnostics" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Exporters.dia",
+    "index-unit-output-path" : "/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Exporters.o",
+    "llvm-bc" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Exporters.bc",
+    "object" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Exporters.o",
+    "swift-dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Exporters.swiftdeps",
+    "swiftmodule" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Exporters~partial.swiftmodule"
+  },
+  "/Users/majdinagi/Documents/StoreCheckIn/LocalTimeClock/Utils/Formatters.swift" : {
+    "const-values" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Formatters.swiftconstvalues",
+    "dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Formatters.d",
+    "diagnostics" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Formatters.dia",
+    "index-unit-output-path" : "/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Formatters.o",
+    "llvm-bc" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Formatters.bc",
+    "object" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Formatters.o",
+    "swift-dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Formatters.swiftdeps",
+    "swiftmodule" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Formatters~partial.swiftmodule"
+  },
+  "/Users/majdinagi/Documents/StoreCheckIn/LocalTimeClock/Utils/Haptics.swift" : {
+    "const-values" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Haptics.swiftconstvalues",
+    "dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Haptics.d",
+    "diagnostics" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Haptics.dia",
+    "index-unit-output-path" : "/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Haptics.o",
+    "llvm-bc" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Haptics.bc",
+    "object" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Haptics.o",
+    "swift-dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Haptics.swiftdeps",
+    "swiftmodule" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/Haptics~partial.swiftmodule"
+  },
+  "/Users/majdinagi/Documents/StoreCheckIn/LocalTimeClock/Views/EditEmployeeView.swift" : {
+    "const-values" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EditEmployeeView.swiftconstvalues",
+    "dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EditEmployeeView.d",
+    "diagnostics" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EditEmployeeView.dia",
+    "index-unit-output-path" : "/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EditEmployeeView.o",
+    "llvm-bc" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EditEmployeeView.bc",
+    "object" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EditEmployeeView.o",
+    "swift-dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EditEmployeeView.swiftdeps",
+    "swiftmodule" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EditEmployeeView~partial.swiftmodule"
+  },
+  "/Users/majdinagi/Documents/StoreCheckIn/LocalTimeClock/Views/EmployeeDetailView.swift" : {
+    "const-values" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeeDetailView.swiftconstvalues",
+    "dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeeDetailView.d",
+    "diagnostics" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeeDetailView.dia",
+    "index-unit-output-path" : "/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeeDetailView.o",
+    "llvm-bc" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeeDetailView.bc",
+    "object" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeeDetailView.o",
+    "swift-dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeeDetailView.swiftdeps",
+    "swiftmodule" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeeDetailView~partial.swiftmodule"
+  },
+  "/Users/majdinagi/Documents/StoreCheckIn/LocalTimeClock/Views/EmployeesView.swift" : {
+    "const-values" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeesView.swiftconstvalues",
+    "dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeesView.d",
+    "diagnostics" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeesView.dia",
+    "index-unit-output-path" : "/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeesView.o",
+    "llvm-bc" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeesView.bc",
+    "object" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeesView.o",
+    "swift-dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeesView.swiftdeps",
+    "swiftmodule" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/EmployeesView~partial.swiftmodule"
+  },
+  "/Users/majdinagi/Documents/StoreCheckIn/LocalTimeClock/Views/LocalTimeClockTabView.swift" : {
+    "const-values" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/LocalTimeClockTabView.swiftconstvalues",
+    "dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/LocalTimeClockTabView.d",
+    "diagnostics" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/LocalTimeClockTabView.dia",
+    "index-unit-output-path" : "/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/LocalTimeClockTabView.o",
+    "llvm-bc" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/LocalTimeClockTabView.bc",
+    "object" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/LocalTimeClockTabView.o",
+    "swift-dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/LocalTimeClockTabView.swiftdeps",
+    "swiftmodule" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/LocalTimeClockTabView~partial.swiftmodule"
+  },
+  "/Users/majdinagi/Documents/StoreCheckIn/LocalTimeClock/Views/TimeClockRootView.swift" : {
+    "const-values" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/TimeClockRootView.swiftconstvalues",
+    "dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/TimeClockRootView.d",
+    "diagnostics" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/TimeClockRootView.dia",
+    "index-unit-output-path" : "/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/TimeClockRootView.o",
+    "llvm-bc" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/TimeClockRootView.bc",
+    "object" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/TimeClockRootView.o",
+    "swift-dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/TimeClockRootView.swiftdeps",
+    "swiftmodule" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/TimeClockRootView~partial.swiftmodule"
+  },
+  "/Users/majdinagi/Documents/StoreCheckIn/StoreCheckIn/StoreCheckInApp.swift" : {
+    "const-values" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/StoreCheckInApp.swiftconstvalues",
+    "dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/StoreCheckInApp.d",
+    "diagnostics" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/StoreCheckInApp.dia",
+    "index-unit-output-path" : "/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/StoreCheckInApp.o",
+    "llvm-bc" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/StoreCheckInApp.bc",
+    "object" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/StoreCheckInApp.o",
+    "swift-dependencies" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/StoreCheckInApp.swiftdeps",
+    "swiftmodule" : "/Users/majdinagi/Documents/StoreCheckIn/.DerivedDataIconRefresh/Build/Intermediates.noindex/StoreCheckIn.build/Debug-iphoneos/StoreCheckIn.build/Objects-normal/arm64/StoreCheckInApp~partial.swiftmodule"
+  }
+}
