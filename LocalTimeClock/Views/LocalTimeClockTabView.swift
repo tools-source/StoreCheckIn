@@ -1,10 +1,9 @@
 import SwiftUI
 
-/// Wire this into the host TabView as a new entry point.
-/// Example: `LocalTimeClockTabView()`
+/// Wire this into the host app TabView as a new entry point.
 struct LocalTimeClockTabView: View {
     var body: some View {
-        EmployeesView()
+        TimeClockRootView()
             .tabItem {
                 Label("Time Clock", systemImage: "clock.badge")
             }

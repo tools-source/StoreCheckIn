@@ -3,185 +3,129 @@ import SwiftData
 
 struct EmployeeDetailView: View {
     @Environment(\.modelContext) private var context
-    @Bindable var employee: Employee
 
-    @State private var selectedRange: QuickRange = .all
-    @State private var showingEdit = false
-    @State private var showingClearSheetConfirm = false
-    @State private var showingExport = false
-    @State private var exportPayload: ExportPayload?
+    let employee: Employee
 
-    @State private var editName = ""
-    @State private var editRole = ""
-    @State private var editRate = ""
-    @State private var editNotes = ""
-    @State private var editActive = true
+    @State private var now: Date = .now
+    @State private var showEdit = false
+    @State private var showClearTimesheet = false
+    @State private var showExport = false
+    @State private var exportURL: URL?
+
+    private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: LocalTimeClockConstants.spacingM) {
-                headerCard
-                timesheetCard
+        List {
+            headerSection
+
+            Section("Actions") {
+                Button("Copy Timesheet as Text") {
+                    Exporters.copyTimesheet(employee: employee, entries: completedEntries, totalSeconds: totalSeconds, totalPay: totalPay)
+                }
+
+                Button("Export CSV") {
+                    do {
+                        exportURL = try Exporters.makeCSV(employee: employee, entries: completedEntries, totalSeconds: totalSeconds, totalPay: totalPay)
+                        showExport = true
+                    } catch {
+                        exportURL = nil
+                    }
+                }
+
+                Button("Clear Timesheet", role: .destructive) {
+                    showClearTimesheet = true
+                }
             }
-            .padding()
-        }
-        .background(Color(.systemGroupedBackground))
-        .navigationTitle(employee.name)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button("Edit") {
-                    loadEditableFields()
-                    showingEdit = true
+
+            Section("Timesheet") {
+                if employee.sortedEntriesNewestFirst.isEmpty {
+                    EmptyStateView(
+                        title: "No Time Entries",
+                        subtitle: "Check this employee in and out to create entries.",
+                        buttonTitle: "Check In Now",
+                        systemImage: "clock.arrow.circlepath"
+                    ) {
+                        checkInIfNeeded()
+                    }
+                    .listRowBackground(Color.clear)
+                } else {
+                    ForEach(employee.sortedEntriesNewestFirst) { entry in
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("Check In: \(Formatters.dateTime(entry.checkInAt))")
+                            Text("Check Out: \(entry.checkOutAt.map(Formatters.dateTime) ?? "In progress")")
+                                .foregroundStyle(.secondary)
+                            Text("Duration: \(entry.durationSeconds.map { Formatters.hhmmss(seconds: $0) } ?? "In progress")")
+                                .font(.caption.monospacedDigit())
+                        }
+                        .padding(.vertical, 4)
+                    }
                 }
             }
         }
-        .sheet(isPresented: $showingEdit) {
-            EmployeeFormView(
-                title: "Edit Employee",
-                name: $editName,
-                role: $editRole,
-                hourlyRate: $editRate,
-                notes: $editNotes,
-                isActive: $editActive
-            ) {
-                employee.name = editName
-                employee.roleOrTitle = editRole.nilIfBlank
-                employee.hourlyRate = Decimal(string: editRate) ?? employee.hourlyRate
-                employee.notes = editNotes.nilIfBlank
-                employee.isActive = editActive
+        .navigationTitle(employee.name)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Edit") { showEdit = true }
+            }
+        }
+        .sheet(isPresented: $showEdit) {
+            EditEmployeeView(employee: employee, title: "Edit Employee") { name, role, rate, notes, isActive in
+                employee.name = name
+                employee.roleOrTitle = role
+                employee.hourlyRate = rate
+                employee.notes = notes
+                employee.isActive = isActive
                 try? context.save()
             }
         }
-        .sheet(isPresented: $showingExport) {
-            if let exportPayload {
-                ShareSheet(activityItems: [exportPayload.data, exportPayload.filename])
+        .sheet(isPresented: $showExport) {
+            if let exportURL {
+                ShareSheet(activityItems: [exportURL])
             }
         }
-        .alert("Clear this employee's timesheet?", isPresented: $showingClearSheetConfirm) {
+        .alert("Clear this employee's timesheet?", isPresented: $showClearTimesheet) {
             Button("Cancel", role: .cancel) {}
             Button("Clear", role: .destructive) {
-                employee.timeEntries.forEach(context.delete)
+                employee.entries.forEach(context.delete)
                 try? context.save()
             }
-        } message: {
-            Text("Only this employee’s entries will be deleted.")
         }
+        .onReceive(timer) { now = $0 }
     }
 
-    private var filteredEntries: [TimeEntry] {
-        let interval = selectedRange.dateInterval()
-        return employee.sortedEntriesNewestFirst.filter { entry in
-            guard let interval else { return true }
-            if let out = entry.checkOutAt {
-                return interval.contains(entry.checkInAt) || interval.contains(out)
-            }
-            return interval.contains(entry.checkInAt)
-        }
+    private var completedEntries: [TimeEntry] {
+        employee.sortedEntriesNewestFirst.filter { $0.checkOutAt != nil }
     }
 
     private var totalSeconds: TimeInterval {
-        TimeAndPayCalculator.totalWorkedSeconds(entries: filteredEntries)
+        Formatters.workedSeconds(for: completedEntries)
     }
 
-    private var totalPay: Decimal {
-        TimeAndPayCalculator.totalPay(totalSeconds: totalSeconds, hourlyRate: employee.hourlyRate)
+    private var totalPay: Double {
+        Formatters.pay(seconds: totalSeconds, hourlyRate: employee.hourlyRate)
     }
 
-    private var headerCard: some View {
-        GradientCard {
-            VStack(alignment: .leading, spacing: LocalTimeClockConstants.spacingS) {
-                Text(employee.name)
-                    .font(.title3.bold())
-                if let role = employee.roleOrTitle {
-                    Text(role).foregroundStyle(.secondary)
-                }
-                StatusBadgeView(isCheckedIn: employee.openEntry != nil, elapsedText: employee.openEntry.map { TimeAndPayCalculator.human(Date.now.timeIntervalSince($0.checkInAt)) })
-                Divider()
-                Text("Total Time: \(TimeAndPayCalculator.human(totalSeconds))")
-                Text("Total Pay: \(TimeAndPayCalculator.formatCurrency(totalPay))")
-                Text("Rate: \(TimeAndPayCalculator.formatCurrency(employee.hourlyRate)) / hr")
+    private var headerSection: some View {
+        Section {
+            VStack(alignment: .leading, spacing: 10) {
+                Text(employee.roleOrTitle ?? "No role/title")
                     .foregroundStyle(.secondary)
+                Text("Total Worked: \(Formatters.hhmmss(seconds: totalSeconds))")
+                Text("Total Pay: \(Formatters.currency(totalPay))")
+                if let open = employee.openEntry {
+                    Text("Live Timer: \(Formatters.hhmmss(seconds: now.timeIntervalSince(open.checkInAt)))")
+                        .font(.body.monospacedDigit())
+                        .foregroundStyle(.green)
+                }
             }
+            .padding(.vertical, 4)
         }
     }
 
-    private var timesheetCard: some View {
-        GradientCard {
-            VStack(alignment: .leading, spacing: LocalTimeClockConstants.spacingM) {
-                HStack {
-                    Text("Timesheet")
-                        .font(.headline)
-                    Spacer()
-                    Picker("Range", selection: $selectedRange) {
-                        ForEach(QuickRange.allCases) { range in
-                            Text(range.rawValue).tag(range)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                }
-
-                HStack {
-                    Button("Export CSV") {
-                        exportPayload = ClipboardAndExport.csvExport(
-                            employee: employee,
-                            entries: filteredEntries,
-                            totalSeconds: totalSeconds,
-                            totalPay: totalPay
-                        )
-                        showingExport = true
-                    }
-                    .buttonStyle(.bordered)
-
-                    Button("Copy as Text") {
-                        ClipboardAndExport.copyToClipboard(
-                            ClipboardAndExport.timesheetText(
-                                employee: employee,
-                                entries: filteredEntries,
-                                totalSeconds: totalSeconds,
-                                totalPay: totalPay
-                            )
-                        )
-                    }
-                    .buttonStyle(.bordered)
-
-                    Button("Clear Timesheet", role: .destructive) {
-                        showingClearSheetConfirm = true
-                    }
-                    .buttonStyle(.bordered)
-                }
-
-                if filteredEntries.isEmpty {
-                    ContentUnavailableView("No Time Entries", systemImage: "clock.arrow.trianglehead.counterclockwise.rotate.90")
-                } else {
-                    ForEach(filteredEntries) { entry in
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("In: \(DateFormatting.friendly(entry.checkInAt))")
-                            Text("Out: \(entry.checkOutAt.map { DateFormatting.friendly($0) } ?? "In progress")")
-                                .foregroundStyle(.secondary)
-                            Text("Duration: \(entry.duration.map { TimeAndPayCalculator.human($0) } ?? "In progress")")
-                                .font(.caption.monospacedDigit())
-                        }
-                        .padding(.vertical, 6)
-                        Divider()
-                    }
-                }
-            }
-        }
-    }
-
-    private func loadEditableFields() {
-        editName = employee.name
-        editRole = employee.roleOrTitle ?? ""
-        editRate = NSDecimalNumber(decimal: employee.hourlyRate).stringValue
-        editNotes = employee.notes ?? ""
-        editActive = employee.isActive
-    }
-}
-
-private extension String {
-    var nilIfBlank: String? {
-        let trimmed = trimmingCharacters(in: .whitespacesAndNewlines)
-        return trimmed.isEmpty ? nil : trimmed
+    private func checkInIfNeeded() {
+        guard employee.openEntry == nil else { return }
+        context.insert(TimeEntry(employee: employee, checkInAt: .now))
+        try? context.save()
+        Haptics.success()
     }
 }
