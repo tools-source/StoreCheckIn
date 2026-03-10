@@ -10,10 +10,11 @@ CLI build:
 xcodebuild -scheme StoreCheckIn -project StoreCheckIn.xcodeproj -destination 'generic/platform=iOS' -derivedDataPath .DerivedData CODE_SIGNING_ALLOWED=NO build
 ```
 
-GitHub Pages-ready policy and metadata helper files live in `docs/`.
+GitHub Pages-ready support/policy pages and metadata helper files live in `docs/`.
 
-If GitHub Pages is enabled for this repo, the expected policy URL is:
+If GitHub Pages is enabled for this repo, the expected URLs are:
 
+- `https://tools-source.github.io/StoreCheckIn/support.html`
 - `https://tools-source.github.io/StoreCheckIn/privacy.html`
 
 For App Store metadata compliance text (including Terms of Use link), use:
