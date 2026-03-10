@@ -4,6 +4,9 @@ struct SubscriptionPaywallView: View {
     @Environment(\.openURL) private var openURL
     @EnvironmentObject private var authController: AppAuthController
     @EnvironmentObject private var subscriptionController: SubscriptionController
+    private let subscriptionsURL = "https://apps.apple.com/account/subscriptions"
+    private let privacyPolicyURL = "https://tools-source.github.io/StoreCheckIn/privacy.html"
+    private let termsOfUseURL = "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"
 
     var body: some View {
         ScrollView {
@@ -23,8 +26,12 @@ struct SubscriptionPaywallView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 14) {
-                    Text(subscriptionController.planName)
-                        .font(.title3.bold())
+                    Text("Subscription Details")
+                        .font(.headline)
+
+                    detailRow(label: "Title", value: subscriptionController.planName)
+                    detailRow(label: "Length", value: "1 month (auto-renewing)")
+                    detailRow(label: "Price", value: "\(subscriptionController.monthlyDisplayPrice) per month")
 
                     Text("\(subscriptionController.monthlyDisplayPrice) per month")
                         .font(.headline)
@@ -58,9 +65,17 @@ struct SubscriptionPaywallView: View {
                     .buttonStyle(.bordered)
 
                     Button("Manage or Cancel Subscription") {
-                        if let url = URL(string: "https://apps.apple.com/account/subscriptions") {
-                            openURL(url)
-                        }
+                        openLink(subscriptionsURL)
+                    }
+                    .buttonStyle(.bordered)
+
+                    Button("Privacy Policy") {
+                        openLink(privacyPolicyURL)
+                    }
+                    .buttonStyle(.bordered)
+
+                    Button("Terms of Use (EULA)") {
+                        openLink(termsOfUseURL)
                     }
                     .buttonStyle(.bordered)
 
@@ -90,5 +105,21 @@ struct SubscriptionPaywallView: View {
             .frame(maxWidth: .infinity)
         }
         .background(Color(.systemGroupedBackground))
+    }
+
+    @ViewBuilder
+    private func detailRow(label: String, value: String) -> some View {
+        HStack(alignment: .firstTextBaseline) {
+            Text(label)
+                .foregroundStyle(.secondary)
+            Spacer()
+            Text(value)
+                .multilineTextAlignment(.trailing)
+        }
+    }
+
+    private func openLink(_ rawURL: String) {
+        guard let url = URL(string: rawURL) else { return }
+        openURL(url)
     }
 }

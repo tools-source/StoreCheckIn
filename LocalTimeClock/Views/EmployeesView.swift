@@ -7,6 +7,9 @@ struct EmployeesView: View {
     @EnvironmentObject private var authController: AppAuthController
     @EnvironmentObject private var subscriptionController: SubscriptionController
     @Query(sort: \Employee.createdAt, order: .reverse) private var employees: [Employee]
+    private let subscriptionsURL = "https://apps.apple.com/account/subscriptions"
+    private let privacyPolicyURL = "https://tools-source.github.io/StoreCheckIn/privacy.html"
+    private let termsOfUseURL = "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"
 
     @State private var navigationPath: [UUID] = []
     @State private var showAddEmployee = false
@@ -90,9 +93,13 @@ struct EmployeesView: View {
                             }
                         }
                         Button("Manage Subscription") {
-                            if let url = URL(string: "https://apps.apple.com/account/subscriptions") {
-                                openURL(url)
-                            }
+                            openLink(subscriptionsURL)
+                        }
+                        Button("Privacy Policy") {
+                            openLink(privacyPolicyURL)
+                        }
+                        Button("Terms of Use (EULA)") {
+                            openLink(termsOfUseURL)
                         }
                         Divider()
                         Button("Clear All Time Entries", role: .destructive) {
@@ -239,5 +246,10 @@ struct EmployeesView: View {
                 ].joined(separator: ":")
             }
             .joined(separator: "|")
+    }
+
+    private func openLink(_ rawURL: String) {
+        guard let url = URL(string: rawURL) else { return }
+        openURL(url)
     }
 }
