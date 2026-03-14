@@ -45,6 +45,13 @@ enum Formatters {
         return formatter
     }()
 
+    static let readableDateRangeStamp: DateIntervalFormatter = {
+        let formatter = DateIntervalFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter
+    }()
+
     static let currency: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
@@ -76,6 +83,11 @@ enum Formatters {
 
     static func readableDateTime(_ date: Date) -> String {
         readableDateTimeStamp.string(from: date)
+    }
+
+    static func readableDateRange(_ interval: DateInterval) -> String {
+        let inclusiveEnd = max(interval.start, interval.end.addingTimeInterval(-1))
+        return readableDateRangeStamp.string(from: interval.start, to: inclusiveEnd)
     }
 
     static func hhmmss(seconds: TimeInterval) -> String {

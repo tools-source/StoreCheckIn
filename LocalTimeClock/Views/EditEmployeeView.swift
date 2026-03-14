@@ -40,13 +40,13 @@ struct EditEmployeeView: View {
                 }
 
                 Section("Shift") {
-                    Toggle("Enable Shift Reminder", isOn: $hasShiftSchedule)
+                    Toggle("Enable Shift Reminders", isOn: $hasShiftSchedule)
 
                     if hasShiftSchedule {
                         DatePicker("Shift Starts", selection: $shiftStart, displayedComponents: .hourAndMinute)
                         DatePicker("Shift Ends", selection: $shiftEnd, displayedComponents: .hourAndMinute)
 
-                        Text("A daily local notification will remind you to check in this employee at the shift start time.")
+                        Text("Daily local notifications will remind you to check in this employee at shift start and check them out at shift end.")
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                     }

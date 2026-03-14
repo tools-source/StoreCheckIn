@@ -13,6 +13,8 @@ final class Employee {
     var shiftEndMinutes: Int?
     var notes: String?
     var isActive: Bool = true
+    var isArchived: Bool = false
+    var sourceEmployeeID: UUID?
 
     @Relationship(deleteRule: .cascade, inverse: \TimeEntry.employee)
     var entries: [TimeEntry]?
@@ -28,6 +30,8 @@ final class Employee {
         shiftEndMinutes: Int? = nil,
         notes: String? = nil,
         isActive: Bool = true,
+        isArchived: Bool = false,
+        sourceEmployeeID: UUID? = nil,
         entries: [TimeEntry] = []
     ) {
         self.id = id
@@ -40,6 +44,8 @@ final class Employee {
         self.shiftEndMinutes = shiftEndMinutes
         self.notes = notes
         self.isActive = isActive
+        self.isArchived = isArchived
+        self.sourceEmployeeID = sourceEmployeeID
         self.entries = entries
     }
 
@@ -48,7 +54,7 @@ final class Employee {
     }
 
     var openEntry: TimeEntry? {
-        entriesList.first(where: { $0.checkOutAt == nil })
+        entriesList.first(where: { $0.checkOutAt == nil && !$0.isArchived })
     }
 
     var sortedEntriesNewestFirst: [TimeEntry] {

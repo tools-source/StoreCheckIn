@@ -3,18 +3,15 @@ import SwiftData
 
 struct EmployeesView: View {
     @Environment(\.modelContext) private var context
-    @Environment(\.openURL) private var openURL
     @EnvironmentObject private var authController: AppAuthController
-    @EnvironmentObject private var subscriptionController: SubscriptionController
+    @EnvironmentObject private var storeProfileController: StoreProfileController
     @Query(sort: \Employee.createdAt, order: .reverse) private var employees: [Employee]
-    private let subscriptionsURL = "https://apps.apple.com/account/subscriptions"
-    private let privacyPolicyURL = "https://tools-source.github.io/StoreCheckIn/privacy.html"
-    private let termsOfUseURL = "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"
 
+    @Binding var selectedTab: LocalTimeClockTabView.Tab
     @State private var navigationPath: [UUID] = []
     @State private var showAddEmployee = false
-    @State private var showClearAll = false
-    @State private var showClearAllAgain = false
+    @State private var showArchiveAllConfirmation = false
+    @State private var showArchiveBlockedAlert = false
     @State private var employeeToEdit: Employee?
     @State private var employeeToDelete: Employee?
 
@@ -67,10 +64,10 @@ struct EmployeesView: View {
                 }
             }
             .background(Color(.systemGroupedBackground))
-            .navigationTitle("Employees")
+            .navigationTitle(storeProfileController.employeesTitle)
             .navigationDestination(for: UUID.self) { employeeID in
                 if let employee = visibleEmployees.first(where: { $0.id == employeeID }) {
-                    EmployeeDetailView(employee: employee)
+                    EmployeeDetailView(employee: employee, scope: .active)
                 } else {
                     Text("Employee not found")
                         .foregroundStyle(.secondary)
@@ -78,42 +75,10 @@ struct EmployeesView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Menu {
-                        Text(authController.accountSummary)
-                        Text(authController.providerSummary)
-                        Text(subscriptionController.statusSummary)
-                        Button("Refresh Account Status") {
-                            Task {
-                                await authController.refreshSessionState()
-                            }
-                        }
-                        Button("Restore Purchases") {
-                            Task {
-                                await subscriptionController.restorePurchases()
-                            }
-                        }
-                        Button("Manage Subscription") {
-                            openLink(subscriptionsURL)
-                        }
-                        Button("Privacy Policy") {
-                            openLink(privacyPolicyURL)
-                        }
-                        Button("Terms of Use (EULA)") {
-                            openLink(termsOfUseURL)
-                        }
-                        Divider()
-                        Button("Clear All Time Entries", role: .destructive) {
-                            showClearAll = true
-                        }
-                        Button("Sign Out", role: .destructive) {
-                            Task {
-                                await ShiftReminderScheduler.removeAllEmployeeReminders()
-                            }
-                            authController.signOut()
-                        }
-                    } label: {
-                        Image(systemName: "person.crop.circle")
+                    Button("Archive") {
+                        handleArchiveButtonTap()
                     }
+                    .disabled(archiveableEmployees.isEmpty)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -157,13 +122,8 @@ struct EmployeesView: View {
         .task(id: reminderSyncSignature) {
             await ShiftReminderScheduler.syncReminders(for: visibleEmployees, ownerUserID: currentUserID)
         }
-        .alert("Clear all time clock data?", isPresented: $showClearAll) {
-            Button("Cancel", role: .cancel) {}
-            Button("Continue", role: .destructive) {
-                showClearAllAgain = true
-            }
-        } message: {
-            Text("This clears all employee check-in and check-out history.")
+        .task(id: legacyArchiveSignature) {
+            ArchiveStore.migrateLegacySnapshots(for: employees, ownerUserID: currentUserID, context: context)
         }
         .alert("Delete employee?", isPresented: deleteAlertPresented) {
             Button("Cancel", role: .cancel) {
@@ -178,13 +138,18 @@ struct EmployeesView: View {
         } message: {
             Text("Delete \(employeeToDelete?.name ?? "this employee") and all time entries?")
         }
-        .alert("Final confirmation", isPresented: $showClearAllAgain) {
+        .alert("Archive all employees?", isPresented: $showArchiveAllConfirmation) {
             Button("Cancel", role: .cancel) {}
-            Button("Clear Time Entries", role: .destructive) {
-                clearAllTimeEntries()
+            Button("Archive Employees", role: .destructive) {
+                archiveAllEmployees()
             }
         } message: {
-            Text("Employees will stay. Only their check-in and check-out records will be removed.")
+            Text("This copies employee hours into Archive and clears those hours from the Employees tab. Employees stay on the Employees tab.")
+        }
+        .alert("Check out employees first", isPresented: $showArchiveBlockedAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Employees who are still checked in need to be checked out before they can be archived.")
         }
     }
 
@@ -210,12 +175,26 @@ struct EmployeesView: View {
         try? context.save()
     }
 
-    private func clearAllTimeEntries() {
-        visibleEmployees
-            .flatMap(\.entriesList)
-            .forEach(context.delete)
+    private func handleArchiveButtonTap() {
+        if archiveableEmployees.contains(where: { $0.openEntry != nil }) {
+            showArchiveBlockedAlert = true
+            return
+        }
+
+        showArchiveAllConfirmation = true
+    }
+
+    private func archiveAllEmployees() {
+        guard !archiveableEmployees.isEmpty else { return }
+
+        for employee in archiveableEmployees {
+            for entry in ArchiveStore.activeEntries(for: employee) {
+                entry.isArchived = true
+            }
+        }
 
         try? context.save()
+        selectedTab = .archive
     }
 
     private var deleteAlertPresented: Binding<Bool> {
@@ -231,7 +210,11 @@ struct EmployeesView: View {
 
     private var visibleEmployees: [Employee] {
         guard let currentUserID else { return [] }
-        return employees.filter { $0.ownerUserID == currentUserID }
+        return employees.filter { $0.ownerUserID == currentUserID && $0.sourceEmployeeID == nil }
+    }
+
+    private var archiveableEmployees: [Employee] {
+        visibleEmployees.filter { ArchiveStore.hasActiveEntries(for: $0) }
     }
 
     private var reminderSyncSignature: String {
@@ -248,8 +231,17 @@ struct EmployeesView: View {
             .joined(separator: "|")
     }
 
-    private func openLink(_ rawURL: String) {
-        guard let url = URL(string: rawURL) else { return }
-        openURL(url)
+    private var legacyArchiveSignature: String {
+        employees
+            .filter { $0.ownerUserID == currentUserID }
+            .map {
+                [
+                    $0.id.uuidString,
+                    $0.isArchived.description,
+                    $0.sourceEmployeeID?.uuidString ?? "none",
+                    String($0.entriesList.count)
+                ].joined(separator: ":")
+            }
+            .joined(separator: "|")
     }
 }

@@ -3,6 +3,10 @@ import UserNotifications
 
 enum ShiftReminderScheduler {
     private static let identifierPrefix = "employee-shift-reminder"
+    private enum ReminderKind: String, CaseIterable {
+        case checkIn = "check-in"
+        case checkOut = "check-out"
+    }
 
     static func syncReminders(for employees: [Employee], ownerUserID: String?) async {
         guard let ownerUserID, !ownerUserID.isEmpty else {
@@ -11,7 +15,9 @@ enum ShiftReminderScheduler {
         }
 
         let reminderEmployees = employees.filter(\.isActive).filter(\.hasScheduledShift)
-        let expectedIdentifiers = Set(reminderEmployees.map { reminderIdentifier(for: $0, ownerUserID: ownerUserID) })
+        let expectedIdentifiers = Set(
+            reminderEmployees.flatMap { reminderIdentifiers(for: $0, ownerUserID: ownerUserID) }
+        )
 
         await removeOrphanedReminders(for: ownerUserID, keeping: expectedIdentifiers)
 
@@ -19,13 +25,14 @@ enum ShiftReminderScheduler {
         guard await ensureAuthorization() else { return }
 
         for employee in reminderEmployees {
-            guard let request = makeRequest(for: employee, ownerUserID: ownerUserID) else { continue }
-            try? await add(request)
+            for request in makeRequests(for: employee, ownerUserID: ownerUserID) {
+                try? await add(request)
+            }
         }
     }
 
     static func removeAllEmployeeReminders() async {
-        let identifiers = await managedPendingIdentifiers()
+        let identifiers = await managedNotificationIdentifiers()
         guard !identifiers.isEmpty else { return }
 
         let center = UNUserNotificationCenter.current()
@@ -34,8 +41,8 @@ enum ShiftReminderScheduler {
     }
 
     private static func removeOrphanedReminders(for ownerUserID: String, keeping identifiersToKeep: Set<String>) async {
-        let pendingIdentifiers = await managedPendingIdentifiers().filter { $0.hasPrefix(ownerPrefix(ownerUserID)) }
-        let identifiersToRemove = pendingIdentifiers.filter { !identifiersToKeep.contains($0) }
+        let managedIdentifiers = await managedNotificationIdentifiers().filter { $0.hasPrefix(ownerPrefix(ownerUserID)) }
+        let identifiersToRemove = managedIdentifiers.filter { !identifiersToKeep.contains($0) }
         guard !identifiersToRemove.isEmpty else { return }
 
         let center = UNUserNotificationCenter.current()
@@ -43,26 +50,54 @@ enum ShiftReminderScheduler {
         center.removeDeliveredNotifications(withIdentifiers: identifiersToRemove)
     }
 
-    private static func makeRequest(for employee: Employee, ownerUserID: String) -> UNNotificationRequest? {
+    private static func makeRequests(for employee: Employee, ownerUserID: String) -> [UNNotificationRequest] {
         guard
             let shiftStartMinutes = employee.shiftStartMinutes,
             let shiftEndMinutes = employee.shiftEndMinutes
         else {
-            return nil
+            return []
         }
 
+        let checkInRequest = makeRequest(
+            kind: .checkIn,
+            employee: employee,
+            ownerUserID: ownerUserID,
+            reminderMinutes: shiftStartMinutes,
+            title: "Check in \(employee.name)",
+            body: "Shift starts at \(Formatters.time(minutesSinceMidnight: shiftStartMinutes)). Don't forget to check in \(employee.name)."
+        )
+        let checkOutRequest = makeRequest(
+            kind: .checkOut,
+            employee: employee,
+            ownerUserID: ownerUserID,
+            reminderMinutes: shiftEndMinutes,
+            title: "Check out \(employee.name)",
+            body: "Shift ends at \(Formatters.time(minutesSinceMidnight: shiftEndMinutes)). Don't forget to check out \(employee.name)."
+        )
+
+        return [checkInRequest, checkOutRequest]
+    }
+
+    private static func makeRequest(
+        kind: ReminderKind,
+        employee: Employee,
+        ownerUserID: String,
+        reminderMinutes: Int,
+        title: String,
+        body: String
+    ) -> UNNotificationRequest {
         let content = UNMutableNotificationContent()
-        content.title = "Check in \(employee.name)"
-        content.body = "Shift starts at \(Formatters.time(minutesSinceMidnight: shiftStartMinutes)) and ends at \(Formatters.time(minutesSinceMidnight: shiftEndMinutes))."
+        content.title = title
+        content.body = body
         content.sound = .default
 
         let trigger = UNCalendarNotificationTrigger(
-            dateMatching: DateComponents(hour: shiftStartMinutes / 60, minute: shiftStartMinutes % 60),
+            dateMatching: DateComponents(hour: reminderMinutes / 60, minute: reminderMinutes % 60),
             repeats: true
         )
 
         return UNNotificationRequest(
-            identifier: reminderIdentifier(for: employee, ownerUserID: ownerUserID),
+            identifier: reminderIdentifier(for: employee, kind: kind, ownerUserID: ownerUserID),
             content: content,
             trigger: trigger
         )
@@ -103,7 +138,13 @@ enum ShiftReminderScheduler {
         }
     }
 
-    private static func managedPendingIdentifiers() async -> [String] {
+    private static func managedNotificationIdentifiers() async -> [String] {
+        let pendingIdentifiers = await pendingManagedIdentifiers()
+        let deliveredIdentifiers = await deliveredManagedIdentifiers()
+        return Array(Set(pendingIdentifiers + deliveredIdentifiers))
+    }
+
+    private static func pendingManagedIdentifiers() async -> [String] {
         await withCheckedContinuation { continuation in
             UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
                 continuation.resume(returning: requests.map(\.identifier).filter { $0.hasPrefix(identifierPrefix) })
@@ -111,8 +152,20 @@ enum ShiftReminderScheduler {
         }
     }
 
-    private static func reminderIdentifier(for employee: Employee, ownerUserID: String) -> String {
-        "\(ownerPrefix(ownerUserID)).\(employee.id.uuidString)"
+    private static func deliveredManagedIdentifiers() async -> [String] {
+        await withCheckedContinuation { continuation in
+            UNUserNotificationCenter.current().getDeliveredNotifications { notifications in
+                continuation.resume(returning: notifications.map(\.request.identifier).filter { $0.hasPrefix(identifierPrefix) })
+            }
+        }
+    }
+
+    private static func reminderIdentifiers(for employee: Employee, ownerUserID: String) -> [String] {
+        ReminderKind.allCases.map { reminderIdentifier(for: employee, kind: $0, ownerUserID: ownerUserID) }
+    }
+
+    private static func reminderIdentifier(for employee: Employee, kind: ReminderKind, ownerUserID: String) -> String {
+        "\(ownerPrefix(ownerUserID)).\(employee.id.uuidString).\(kind.rawValue)"
     }
 
     private static func ownerPrefix(_ ownerUserID: String) -> String {

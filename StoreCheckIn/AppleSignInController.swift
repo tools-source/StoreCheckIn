@@ -9,6 +9,12 @@ struct AppUserSession: Equatable {
 
 @MainActor
 final class AppAuthController: ObservableObject {
+    enum ReauthenticationResult {
+        case success
+        case cancelled
+        case failure(String)
+    }
+
     @Published private(set) var isChecking = false
     @Published private(set) var session: AppUserSession?
     @Published var errorMessage: String?
@@ -49,6 +55,25 @@ final class AppAuthController: ObservableObject {
         }
 
         return "Apple account connected"
+    }
+
+    var resetPinAccountLabel: String {
+        if let displayName = session?.displayName, !displayName.isEmpty {
+            return displayName
+        }
+
+        if let email = session?.email, !email.isEmpty {
+            return email
+        }
+
+        return "Signed in with Apple on this device"
+    }
+
+    var shouldShowResetPinAccountHint: Bool {
+        guard let session else { return true }
+        let hasDisplayName = !(session.displayName?.isEmpty ?? true)
+        let hasEmail = !(session.email?.isEmpty ?? true)
+        return !hasDisplayName && !hasEmail
     }
 
     var providerSummary: String {
@@ -97,6 +122,40 @@ final class AppAuthController: ObservableObject {
         }
 
         isChecking = false
+    }
+
+    func handleAppleReauthenticationResult(_ result: Result<ASAuthorization, any Error>) -> ReauthenticationResult {
+        switch result {
+        case .success(let authorization):
+            guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential else {
+                return .failure("Apple Sign In did not return a valid credential.")
+            }
+
+            guard let currentSession = session ?? loadPersistedSession() else {
+                return .failure("Your Apple account session is unavailable. Sign in again to reset the PIN.")
+            }
+
+            guard credential.user == currentSession.userID else {
+                return .failure("Use the same Apple account currently signed into this app.")
+            }
+
+            let refreshedSession = AppUserSession(
+                userID: currentSession.userID,
+                displayName: formattedName(from: credential.fullName) ?? currentSession.displayName,
+                email: credential.email ?? currentSession.email
+            )
+
+            persist(refreshedSession)
+            session = refreshedSession
+            return .success
+
+        case .failure(let error):
+            if let authError = error as? ASAuthorizationError, authError.code == .canceled {
+                return .cancelled
+            }
+
+            return .failure(error.localizedDescription)
+        }
     }
 
     func refreshSessionState(showsLoadingState: Bool = true) async {

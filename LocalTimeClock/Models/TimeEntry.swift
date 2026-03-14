@@ -9,6 +9,7 @@ final class TimeEntry {
     var checkInAt: Date = Date.now
     var checkOutAt: Date?
     var createdAt: Date = Date.now
+    var isArchived: Bool = false
 
     init(
         id: UUID = UUID(),
@@ -16,7 +17,8 @@ final class TimeEntry {
         employee: Employee? = nil,
         checkInAt: Date = .now,
         checkOutAt: Date? = nil,
-        createdAt: Date = .now
+        createdAt: Date = .now,
+        isArchived: Bool = false
     ) {
         self.id = id
         self.ownerUserID = ownerUserID
@@ -24,6 +26,7 @@ final class TimeEntry {
         self.checkInAt = checkInAt
         self.checkOutAt = checkOutAt
         self.createdAt = createdAt
+        self.isArchived = isArchived
     }
 
     var durationSeconds: TimeInterval? {
