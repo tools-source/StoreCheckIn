@@ -2,6 +2,17 @@
 
 This repo now includes a runnable iOS app target.
 
+Current app status:
+
+- Sign in with Apple account access
+- App Store subscription-gated usage
+- Employee check-in and check-out tracking
+- Archive/history with per-employee weekly filtering
+- Check-in and check-out reminder notifications
+- 6-digit PIN lock with Face ID or Touch ID when available
+- Store name customization for the Employees tab
+- Local delete-account flow for removing this device's app data
+
 Open `StoreCheckIn.xcodeproj` in Xcode and run the `StoreCheckIn` scheme on an iPhone or iPad simulator.
 
 CLI build:
